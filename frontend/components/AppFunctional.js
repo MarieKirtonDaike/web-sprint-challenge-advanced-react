@@ -15,47 +15,42 @@ export default function AppFunctional(props) {
 
   const [steps, setSteps] = useState(initialSteps)
   const [index, setIndex] = useState(initialIndex)
-  const [clicks, setClicks] = useState(1)
+
 
 
   const changestepsleft = (e) => {
 
     e.preventDefault()
-    setClicks(clicks + 1)
-    setSteps(clicks)
-    
+    // setClicks(clicks +1)
+    // setSteps(steps+1)
+    dontmoveleft.includes(index) ? setSteps(steps) : setSteps(steps+1)
     dontmoveleft.includes(index) ? setIndex(index) : setIndex(index - 1)
     
   }
 
   const reset = (e) => {
     e.preventDefault();
-    setClicks(1)
     setSteps(initialSteps);
     setIndex(initialIndex)
   }
 
   const changestepsright = (e) => {
     e.preventDefault()
-    setClicks(clicks + 1)
-    setSteps(clicks)
-   
+    dontmoveright.includes(index) ? setSteps(steps) : setSteps(steps+1)
     dontmoveright.includes(index) ? setIndex(index) : setIndex(index + 1)
 
   }
 
   const changestepsup = (e) => {
     e.preventDefault()
-    setClicks(clicks + 1)
-    setSteps(clicks)
+    index <= up ? setSteps(steps) : setSteps(steps+1)
     index <= up ? setIndex(index) : setIndex(index - 3)
   }
 
 
   const changestepsdown = (e) => {
     e.preventDefault()
-    setClicks(clicks + 1)
-    setSteps(clicks)
+    index >= down ? setSteps(steps) : setSteps(steps+1)
     index >= down ? setIndex(index) : setIndex(index + 3)
 
 
