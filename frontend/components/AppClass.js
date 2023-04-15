@@ -35,7 +35,9 @@ export default class AppClass extends React.Component {
       email: initialEmail,
       index: initialIndex,
       steps: initialSteps,
-      click: 4
+      click: 4,
+      finalemail: "",
+      displayon: false
     }
 
   }
@@ -85,21 +87,37 @@ export default class AppClass extends React.Component {
       this.setState({ ...this.state, steps: initialSteps, index: initialIndex, click : 4 })
     }
 
-
+   
 // all of this is the form now
 
 onsubmithandler = (e) => {
-  e.preventDefault()
-  this.setState({...this.state, email: initialEmail})
+  // e.preventDefault()
+  // this.emailconfig(e.target.value)
+  // this.setState({...this.state, email: initialEmail})
+  this.setState({...this.state, email: initialEmail, displayon: true})
   
 }
 
 onchangehandler = (e) => {
-  this.setState({...this.state, email: e.target.value })
+  e.preventDefault()
+  this.emailconfig(e.target.value)
+  
+  
 }
 
 
-
+emailconfig = (email) =>{
+  let newarray = [...email]
+for (let i = 0 ; i < newarray.length; i ++){
+   if (newarray[i] === "@"){
+    const  newname = newarray.splice(0, i ).join("")
+    }
+  if (newname.length !== undefined) {
+    this.setState({...this.state, finalemail: newname, readytopost: true})
+    }
+}
+console.log(this.state.finalemail)
+}
 
 
 
@@ -169,7 +187,7 @@ onchangehandler = (e) => {
             }
           </div>
           <div className="info">
-            <h3 id="message"> { this.state.email !== initialEmail ? `${this.state.email} win #${Math.floor(Math.random(1)*100)}`: themessage[this.state.click] }</h3>
+            <h3 id="message"> { this.state.displayon ?   `${this.state.finalemail} win #${Math.floor(Math.random(1)*100)}`: themessage[this.state.click] }</h3>
           </div>
           <div id="keypad">
             <button onClick={this.changingtheBLeft} id="left">LEFT</button>
