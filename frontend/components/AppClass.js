@@ -3,37 +3,63 @@ import React from 'react'
 import { useState } from 'react'
 
 const URL = 'http://localhost:9000/api/result'
+
+const themessage = ["You can't go left", "You can't go up", "You can't go down", "You can't go right", ""]
+const coordinates = ["(1, 1)", "(2, 1)", "(3, 1)",
+  "(1, 2)", "(2, 2)", "(3, 2)",
+  "(1, 3)", "(2, 3)", "(3, 3)"]
+const dontmoveright = [2, 5, 8]
+const dontmoveleft = [0, 3, 6]
+const up = 2
+const down = 6
+
+
 // Suggested initial states
 const initialMessage = ''
 const initialEmail = ''
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
 
-const initialState = {
-  message: initialMessage,
-  email: initialEmail,
-  index: initialIndex,
-  steps: initialSteps,
-}
+// const initialState = {
+//   email: initialEmail,
+//   index: initialIndex,
+//   steps: initialSteps,
+
+// }
 
 export default class AppClass extends React.Component {
-  state = {
-    message: initialMessage,
-    email: initialEmail,
-    index: initialIndex,
-    steps: initialSteps,
-    error: ""
-
-
+  constructor(props) {
+    super(props);
+   this.state = {
+      message: initialMessage,
+      email: initialEmail,
+      index: initialIndex,
+      steps: initialSteps,
+      click: 4
+    }
   }
 
-  changingtheBLeft = () => {
-    this.setState({ ...this.state, index: [initialIndex - 1], steps: [initialSteps + 1] })
+
+  changingtheBLeft = (e) => {
+    dontmoveleft.includes(this.state.index) ? this.setState({ ...this.state }) : this.setState({ ...this.state, steps: this.state.steps + 1 , index: this.state.index - 1 });
+   
   }
 
- 
-  reset = () => {
-    this.setState({...this.state, steps: initialSteps, index: initialIndex})
+  changingtheBright = (e) => {
+    dontmoveright.includes(this.state.index) ? this.setState({...this.state}) : this.setState({ ...this.state, steps: this.state.steps + 1, index: this.state.index + 1 })
+  }
+
+  changingtheBup = (e) => {
+    this.state.index <= up ? this.setState({...this.state}) : this.setState({ ...this.state, steps: this.state.steps + 1, index: this.state.index - 3 })
+  }
+
+  changingtheBdown = (e) => {
+    this.state.index >= down ? this.setState({...this.state}) : this.setState({ ...this.state, steps: this.state.steps + 1, index: this.state.index  + 3 })
+  }
+
+
+  reset = (e) => {
+    this.setState({ ...this.state, steps: initialSteps, index: initialIndex })
   }
 
 
@@ -83,7 +109,7 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">Coordinates (2, 2)</h3>
-          <h3 id="steps">You Moved {this.state.steps}</h3>
+          <h3 id="steps">You Moved {this.state.steps} Times</h3>
         </div>
         <div id="grid">
           {/* {
@@ -106,9 +132,9 @@ export default class AppClass extends React.Component {
         </div>
         <div id="keypad">
           <button onClick={this.changingtheBLeft} id="left">LEFT</button>
-          <button id="up">UP</button>
-          <button id="right">RIGHT</button>
-          <button id="down">DOWN</button>
+          <button onClick={this.changingtheBup} id="up">UP</button>
+          <button onClick={this.changingtheBright} id="right">RIGHT</button>
+          <button onClick={this.changingtheBdown}id="down">DOWN</button>
           <button onClick={this.reset} id="reset">reset</button>
         </div>
         <form >
