@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState } from 'react'
 
 // Suggested initial states
 const initialMessage = ''
@@ -7,6 +8,58 @@ const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
 
 export default function AppFunctional(props) {
+
+  const [steps, setSteps] = useState(initialSteps)
+  const [index, setIndex] = useState(initialIndex)
+  const [clicks, setClicks] = useState(1)
+
+
+  const changestepsleft = (e) => {
+    
+    e.preventDefault()
+    setClicks(clicks+1)
+    setSteps(clicks)
+    setIndex(index - 1)
+
+  }
+
+  const reset = (e) => {
+    e.preventDefault();
+    setClicks(1)
+    setSteps(initialSteps);
+    setIndex(initialIndex)
+  }
+
+const changestepsright = (e) => {
+  e.preventDefault()
+  setClicks(clicks+1)
+  setSteps(clicks)
+  setIndex(index + 1)
+
+}
+
+
+const changestepsup = (e) => {
+  e.preventDefault()
+  setClicks(clicks+1)
+  setSteps(clicks)
+  setIndex(index - 3)
+
+}
+
+
+const changestepsdown = (e) => {
+  e.preventDefault()
+  setClicks(clicks+1)
+  setSteps(clicks)
+  setIndex(index + 3)
+  
+
+}
+
+
+
+
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
@@ -21,9 +74,9 @@ export default function AppFunctional(props) {
     // returns the fully constructed string.
   }
 
-  function reset() {
-    // Use this helper to reset all states to their initial values.
-  }
+  // function reset() {
+  //   // Use this helper to reset all states to their initial values.
+  // }
 
   function getNextIndex(direction) {
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
@@ -48,13 +101,20 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Coordinates (2, 2)</h3>
-        <h3 id="steps">You moved 0 times</h3>
+        <h3 id="steps">You moved {steps} times</h3>
       </div>
       <div id="grid">
-        {
+        {/* {
           [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
             <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
               {idx === 4 ? 'B' : null}
+            </div>
+          ))
+        } */}
+        {
+          [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
+            <div key={idx} className={`square${idx === index ? ' active' : ''}`}>
+              {idx === index ? 'B' : null}
             </div>
           ))
         }
@@ -63,11 +123,11 @@ export default function AppFunctional(props) {
         <h3 id="message"></h3>
       </div>
       <div id="keypad">
-        <button id="left">LEFT</button>
-        <button id="up">UP</button>
-        <button id="right">RIGHT</button>
-        <button id="down">DOWN</button>
-        <button id="reset">reset</button>
+        <button onClick={changestepsleft} id="left">LEFT</button>
+        <button onClick={changestepsup} id="up">UP</button>
+        <button onClick={changestepsright}id="right">RIGHT</button>
+        <button onClick={changestepsdown}id="down">DOWN</button>
+        <button onClick={reset} id="reset">reset</button>
       </div>
       <form>
         <input id="email" type="email" placeholder="type email"></input>

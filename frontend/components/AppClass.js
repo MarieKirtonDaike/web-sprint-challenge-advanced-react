@@ -1,5 +1,8 @@
+import axios from 'axios'
 import React from 'react'
+import { useState } from 'react'
 
+const URL = 'http://localhost:9000/api/result'
 // Suggested initial states
 const initialMessage = ''
 const initialEmail = ''
@@ -14,6 +17,26 @@ const initialState = {
 }
 
 export default class AppClass extends React.Component {
+  state = {
+    message: initialMessage,
+    email: initialEmail,
+    index: initialIndex,
+    steps: initialSteps,
+    error: ""
+
+
+  }
+
+  changingtheBLeft = () => {
+    this.setState({ ...this.state, index: [initialIndex - 1], steps: [initialSteps + 1] })
+  }
+
+ 
+  reset = () => {
+    this.setState({...this.state, steps: initialSteps, index: initialIndex})
+  }
+
+
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
@@ -39,6 +62,8 @@ export default class AppClass extends React.Component {
   }
 
   move = (evt) => {
+
+    // this.useState({...this.state, index : initialIndex  })
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
   }
@@ -48,6 +73,7 @@ export default class AppClass extends React.Component {
   }
 
   onSubmit = (evt) => {
+    // axios.post(URL, {})
     // Use a POST request to send a payload to the server.
   }
 
@@ -57,13 +83,20 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">Coordinates (2, 2)</h3>
-          <h3 id="steps">You moved 0 times</h3>
+          <h3 id="steps">You Moved {this.state.steps}</h3>
         </div>
         <div id="grid">
-          {
+          {/* {
             [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
               <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
                 {idx === 4 ? 'B' : null}
+              </div>
+            ))
+          } */}
+          {
+            [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
+              <div key={idx} className={`square${idx === this.state.index ? ' active' : ''}`}>
+                {idx === this.state.index ? 'B' : null}
               </div>
             ))
           }
@@ -72,13 +105,13 @@ export default class AppClass extends React.Component {
           <h3 id="message"></h3>
         </div>
         <div id="keypad">
-          <button id="left">LEFT</button>
+          <button onClick={this.changingtheBLeft} id="left">LEFT</button>
           <button id="up">UP</button>
           <button id="right">RIGHT</button>
           <button id="down">DOWN</button>
-          <button id="reset">reset</button>
+          <button onClick={this.reset} id="reset">reset</button>
         </div>
-        <form>
+        <form >
           <input id="email" type="email" placeholder="type email"></input>
           <input id="submit" type="submit"></input>
         </form>
