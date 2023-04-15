@@ -86,6 +86,23 @@ export default class AppClass extends React.Component {
     }
 
 
+// all of this is the form now
+
+onsubmithandler = (e) => {
+  e.preventDefault()
+  this.setState({...this.state, email: initialEmail})
+  
+}
+
+onchangehandler = (e) => {
+  this.setState({...this.state, email: e.target.value })
+}
+
+
+
+
+
+
     // // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
     // // You can delete them and build your own logic from scratch.
 
@@ -152,7 +169,7 @@ export default class AppClass extends React.Component {
             }
           </div>
           <div className="info">
-            <h3 id="message">{themessage[this.state.click]}</h3>
+            <h3 id="message"> { this.state.email !== initialEmail ? `${this.state.email} win #${Math.floor(Math.random(1)*100)}`: themessage[this.state.click] }</h3>
           </div>
           <div id="keypad">
             <button onClick={this.changingtheBLeft} id="left">LEFT</button>
@@ -161,8 +178,8 @@ export default class AppClass extends React.Component {
             <button onClick={this.changingtheBdown} id="down">DOWN</button>
             <button onClick={this.reset} id="reset">reset</button>
           </div>
-          <form >
-            <input id="email" type="email" placeholder="type email"></input>
+          <form onSubmit={this.onsubmithandler}>
+            <input onChange={this.onchangehandler}id="email" type="email" placeholder="type email"></input>
             <input id="submit" type="submit"></input>
           </form>
         </div>
