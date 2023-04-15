@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
+import axios from 'axios'
 
 // Suggested initial states
 const themessage = [ "You can't go left", "You can't go up" , "You can't go down",  "You can't go right", ""]
+const coordinates = [ "(1, 1)", "(2, 1)", "(3, 1)",
+  "(1, 2)", "(2, 2)", "(3, 2)",
+  "(1, 3)", "(2, 3)", "(3, 3)"]
 const dontmoveright = [2, 5, 8]
 const dontmoveleft = [0, 3, 6]
 const up = 2
@@ -17,6 +21,8 @@ export default function AppFunctional(props) {
   const [steps, setSteps] = useState(initialSteps)
   const [index, setIndex] = useState(initialIndex)
   const [click, setClick] = useState(4)
+  const [email, setEmail] = useState(initialEmail)
+
 
   const clickable = (e) => {
     if (e.target.id === "right" && dontmoveright.includes(index)){
@@ -88,6 +94,23 @@ export default function AppFunctional(props) {
 
   }
 
+// all this is for the puzzle now we are working on the email form field 
+
+
+
+const onchangehandler = (e) => {
+  e.preventDefault();
+  setEmail(e.target.value)
+
+}
+
+function onsubmithandler (e){
+  e.preventDefault();
+    setEmail(initialEmail)
+   
+  } 
+
+  
 
 
 
@@ -127,11 +150,11 @@ export default function AppFunctional(props) {
   function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
   }
-console.log(index)
+
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
-        <h3 id="coordinates">Coordinates (2, 2)</h3>
+        <h3 id="coordinates">Coordinates {coordinates[index]}</h3>
         <h3 id="steps">You moved {steps} times</h3>
       </div>
       <div id="grid">
@@ -151,7 +174,7 @@ console.log(index)
         }
       </div>
       <div className="info">
-        <h3 id="message">{themessage[click]}</h3>
+        <h3 id="message">{email.length > 0 ? `${email} win #${Math.floor(Math.random(1)*100)}`: themessage[click]}</h3>
       </div>
       <div id="keypad">
         <button onClick={changestepsleft} id="left">LEFT</button>
@@ -160,8 +183,8 @@ console.log(index)
         <button onClick={changestepsdown} id="down">DOWN</button>
         <button onClick={reset} id="reset">reset</button>
       </div>
-      <form >
-        <input id="email" type="email" placeholder="type email"></input>
+      <form onSubmit={onsubmithandler}>
+        <input onChange={onchangehandler} id="email" type="email" placeholder="type email"></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
