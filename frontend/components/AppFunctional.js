@@ -2,6 +2,8 @@ import React from 'react'
 import { useState } from 'react'
 
 // Suggested initial states
+const upperbounds = 8
+const lowerbounds = 0
 const initialMessage = ''
 const initialEmail = ''
 const initialSteps = 0
@@ -15,12 +17,13 @@ export default function AppFunctional(props) {
 
 
   const changestepsleft = (e) => {
-    
-    e.preventDefault()
-    setClicks(clicks+1)
-    setSteps(clicks)
-    setIndex(index - 1)
 
+    e.preventDefault()
+    setClicks(clicks + 1)
+    setSteps(clicks)
+    index <= lowerbounds ? setIndex(lowerbounds) : setIndex(index - 1) 
+    
+    
   }
 
   const reset = (e) => {
@@ -30,32 +33,31 @@ export default function AppFunctional(props) {
     setIndex(initialIndex)
   }
 
-const changestepsright = (e) => {
-  e.preventDefault()
-  setClicks(clicks+1)
-  setSteps(clicks)
-  setIndex(index + 1)
+  const changestepsright = (e) => {
+    e.preventDefault()
+    setClicks(clicks + 1)
+    setSteps(clicks)
+    index >= upperbounds ? setIndex(upperbounds) : setIndex(index + 1)
 
-}
+  }
+
+  const changestepsup = (e) => {
+    e.preventDefault()
+    setClicks(clicks + 1)
+    setSteps(clicks)
+    index <= lowerbounds ? setIndex(lowerbounds) : setIndex(index - 3)
+
+  }
 
 
-const changestepsup = (e) => {
-  e.preventDefault()
-  setClicks(clicks+1)
-  setSteps(clicks)
-  setIndex(index - 3)
-
-}
+  const changestepsdown = (e) => {
+    e.preventDefault()
+    setClicks(clicks + 1)
+    setSteps(clicks)
+    setIndex(index + 3)
 
 
-const changestepsdown = (e) => {
-  e.preventDefault()
-  setClicks(clicks+1)
-  setSteps(clicks)
-  setIndex(index + 3)
-  
-
-}
+  }
 
 
 
@@ -125,11 +127,11 @@ const changestepsdown = (e) => {
       <div id="keypad">
         <button onClick={changestepsleft} id="left">LEFT</button>
         <button onClick={changestepsup} id="up">UP</button>
-        <button onClick={changestepsright}id="right">RIGHT</button>
-        <button onClick={changestepsdown}id="down">DOWN</button>
+        <button onClick={changestepsright} id="right">RIGHT</button>
+        <button onClick={changestepsdown} id="down">DOWN</button>
         <button onClick={reset} id="reset">reset</button>
       </div>
-      <form>
+      <form >
         <input id="email" type="email" placeholder="type email"></input>
         <input id="submit" type="submit"></input>
       </form>
