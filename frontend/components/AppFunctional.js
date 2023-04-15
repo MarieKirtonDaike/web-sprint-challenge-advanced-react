@@ -2,8 +2,10 @@ import React from 'react'
 import { useState } from 'react'
 
 // Suggested initial states
-const upperbounds = 8
-const lowerbounds = 0
+const dontmoveright = [2,5,8]
+const dontmoveleft = [0,3,6]
+const up = 2
+const down = 6
 const initialMessage = ''
 const initialEmail = ''
 const initialSteps = 0
@@ -21,8 +23,8 @@ export default function AppFunctional(props) {
     e.preventDefault()
     setClicks(clicks + 1)
     setSteps(clicks)
-    index <= lowerbounds ? setIndex(lowerbounds) : setIndex(index - 1) 
     
+    dontmoveleft.includes(index) ? setIndex(index) : setIndex(index - 1)
     
   }
 
@@ -37,7 +39,8 @@ export default function AppFunctional(props) {
     e.preventDefault()
     setClicks(clicks + 1)
     setSteps(clicks)
-    index >= upperbounds ? setIndex(upperbounds) : setIndex(index + 1)
+   
+    dontmoveright.includes(index) ? setIndex(index) : setIndex(index + 1)
 
   }
 
@@ -45,8 +48,7 @@ export default function AppFunctional(props) {
     e.preventDefault()
     setClicks(clicks + 1)
     setSteps(clicks)
-    index <= lowerbounds ? setIndex(lowerbounds) : setIndex(index - 3)
-
+    index <= up ? setIndex(index) : setIndex(index - 3)
   }
 
 
@@ -54,7 +56,7 @@ export default function AppFunctional(props) {
     e.preventDefault()
     setClicks(clicks + 1)
     setSteps(clicks)
-    setIndex(index + 3)
+    index >= down ? setIndex(index) : setIndex(index + 3)
 
 
   }
