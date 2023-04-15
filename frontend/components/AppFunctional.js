@@ -2,8 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 
 // Suggested initial states
-const dontmoveright = [2,5,8]
-const dontmoveleft = [0,3,6]
+const themessage = [ "You can't go left", "You can't go up" , "You can't go down",  "You can't go right", ""]
+const dontmoveright = [2, 5, 8]
+const dontmoveleft = [0, 3, 6]
 const up = 2
 const down = 6
 const initialMessage = ''
@@ -15,44 +16,75 @@ export default function AppFunctional(props) {
 
   const [steps, setSteps] = useState(initialSteps)
   const [index, setIndex] = useState(initialIndex)
+  const [click, setClick] = useState(4)
+
+  const clickable = (e) => {
+    if (e.target.id === "right" && dontmoveright.includes(index)){
+      setClick(3)
+   
+    }
+    else if (e.target.id === "up" && index <= up){
+      setClick(1)
+      
+    }
+    else if (e.target.id === "left" && dontmoveleft.includes(index)) {
+      setClick(0)
+      
+    }
+    else if (e.target.id === "down" && index >= down ) {
+      setClick(2)
+     
+    }
+    else {
+      setClick(4)
+   
+    }
+    return click
+  }
+
 
 
 
   const changestepsleft = (e) => {
-
     e.preventDefault()
+    console.log(e.target.id)
     // setClicks(clicks +1)
     // setSteps(steps+1)
-    dontmoveleft.includes(index) ? setSteps(steps) : setSteps(steps+1)
-    dontmoveleft.includes(index) ? setIndex(index) : setIndex(index - 1)
+    dontmoveleft.includes(index) ? setSteps(steps) : setSteps(steps + 1)
+    dontmoveleft.includes(index) ? setIndex(index) : setIndex(index - 1);
+    clickable(e)
     
+
   }
 
   const reset = (e) => {
     e.preventDefault();
     setSteps(initialSteps);
     setIndex(initialIndex)
+    setClick(4)
   }
 
   const changestepsright = (e) => {
     e.preventDefault()
-    dontmoveright.includes(index) ? setSteps(steps) : setSteps(steps+1)
+    dontmoveright.includes(index) ? setSteps(steps) : setSteps(steps + 1)
     dontmoveright.includes(index) ? setIndex(index) : setIndex(index + 1)
+    clickable(e)
 
   }
 
   const changestepsup = (e) => {
     e.preventDefault()
-    index <= up ? setSteps(steps) : setSteps(steps+1)
+    index <= up ? setSteps(steps) : setSteps(steps + 1)
     index <= up ? setIndex(index) : setIndex(index - 3)
+    clickable(e)
   }
 
 
   const changestepsdown = (e) => {
     e.preventDefault()
-    index >= down ? setSteps(steps) : setSteps(steps+1)
+    index >= down ? setSteps(steps) : setSteps(steps + 1)
     index >= down ? setIndex(index) : setIndex(index + 3)
-
+    clickable(e)
 
   }
 
@@ -95,7 +127,7 @@ export default function AppFunctional(props) {
   function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
   }
-
+console.log(index)
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
@@ -119,7 +151,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-        <h3 id="message"></h3>
+        <h3 id="message">{themessage[click]}</h3>
       </div>
       <div id="keypad">
         <button onClick={changestepsleft} id="left">LEFT</button>
