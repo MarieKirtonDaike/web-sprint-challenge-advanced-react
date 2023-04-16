@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 const URL = 'http://localhost:9000/api/result'
 
-const themessage = ["You can't go left", "You can't go up", "You can't go down", "You can't go right", ""]
+const themessage = ["You can't go left","You can't go up","You can't go down","You can't go right", ""]
 const coordinates = ["(1,1)", "(2,1)", "(3,1)",
   "(1,2)", "(2,2)", "(3,2)",
   "(1,3)", "(2,3)", "(3,3)"]
@@ -135,7 +135,7 @@ onchangehandler = (e) => {
             }
           </div>
           <div className="info">
-            <h3 id="message"> { this.state.displayon ?   this.state.finalemail : themessage[this.state.click] }</h3>
+            <h3 id="message">{ this.state.displayon ?   this.state.finalemail : themessage[this.state.click] }</h3>
           </div>
           <div id="keypad">
             <button onClick={this.changingtheBLeft} id="left">LEFT</button>

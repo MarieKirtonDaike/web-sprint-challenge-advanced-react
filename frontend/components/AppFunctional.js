@@ -3,7 +3,7 @@ import { useState } from 'react'
 import axios from 'axios'
 
 // Suggested initial states
-const themessage = ["You can't go left","You can't go up", "You can't go down", "You can't go right", ""]
+const themessage = ["You can't go left","You can't go up","You can't go down","You can't go right", ""]
 const coordinates = ["(1,1)", "(2,1)", "(3,1)",
   "(1,2)", "(2,2)", "(3,2)",
   "(1,3)", "(2,3)", "(3,3)"]
