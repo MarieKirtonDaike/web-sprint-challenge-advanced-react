@@ -4,9 +4,9 @@ import axios from 'axios'
 
 // Suggested initial states
 const themessage = ["You can't go left", "You can't go up", "You can't go down", "You can't go right", ""]
-const coordinates = ["(1, 1)", "(2, 1)", "(3, 1)",
-  "(1, 2)", "(2, 2)", "(3, 2)",
-  "(1, 3)", "(2, 3)", "(3, 3)"]
+const coordinates = ["(1,1)", "(2,1)", "(3,1)",
+  "(1,2)", "(2,2)", "(3,2)",
+  "(1,3)", "(2,3)", "(3,3)"]
 const dontmoveright = [2, 5, 8]
 const dontmoveleft = [0, 3, 6]
 const up = 2
@@ -22,7 +22,8 @@ export default function AppFunctional(props) {
   const [index, setIndex] = useState(initialIndex)
   const [click, setClick] = useState(4)
   const [email, setEmail] = useState(initialEmail)
-  const [display, setdisplayon] = useState(false)
+  const [display, setDisplay] = useState("")
+  const [displayon, setdisplayon] = useState(false)
 
 
   const clickable = (e) => {
@@ -52,14 +53,9 @@ export default function AppFunctional(props) {
 
   const changestepsleft = (e) => {
     e.preventDefault()
-    console.log(e.target.id)
-    // setClicks(clicks +1)
-    // setSteps(steps+1)
     dontmoveleft.includes(index) ? setSteps(steps) : setSteps(steps + 1)
     dontmoveleft.includes(index) ? setIndex(index) : setIndex(index - 1);
     clickable(e)
-
-
   }
 
   const reset = (e) => {
@@ -105,26 +101,39 @@ export default function AppFunctional(props) {
 
   }
 
+
+
   function onsubmithandler(e) {
     e.preventDefault();
-    emailconfig(email)
-    if (email.length >= 1) {
-      setdisplayon(true)
-    }
+    const addstuff =  { x : coordinates[index][1], y: coordinates[index][3], steps : steps, email : email  };
+    
+    axios.post("http://localhost:9000/api/result", addstuff )
+    .then(resp => {
+      const display = resp.data.message
+      setDisplay(display)
+    })
+      
+    .catch(err => console.log(err))
+    setdisplayon(true)
+    
+    //  emailconfig(email)
+    // if (email.length >= 1) {
+    //   setdisplayon(true)
+    // }
   }
 
 
-  const emailconfig = (email) => {
-    let newarray = [...email]
-    for (let i = 0; i < newarray.length; i++) {
-      if (newarray[i] === "@") {
-        const newname = newarray.splice(0, i).join("")
-        if (newname.length !== undefined) {
-          setEmail(newname)
-        }
-      }
-    }
-  }
+  // const emailconfig = (email) => {
+  //   let newarray = [...email]
+  //   for (let i = 0; i < newarray.length; i++) {
+  //     if (newarray[i] === "@") {
+  //       const newname = newarray.splice(0, i).join("")
+  //       if (newname.length !== undefined) {
+  //         setEmail(newname)
+  //       }
+  //     }
+  //   }
+  // }
 
 
 
@@ -166,7 +175,7 @@ export default function AppFunctional(props) {
   function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
   }
-
+  
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
@@ -190,7 +199,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-        <h3 id="message">{display ? `${email} win #${Math.floor(Math.random(1) * 100)}` : themessage[click]}</h3>
+        <h3 id="message">{displayon ? display : themessage[click]}</h3>
       </div>
       <div id="keypad">
         <button onClick={changestepsleft} id="left">LEFT</button>

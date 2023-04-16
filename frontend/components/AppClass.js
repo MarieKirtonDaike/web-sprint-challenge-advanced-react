@@ -5,9 +5,9 @@ import { useState } from 'react'
 const URL = 'http://localhost:9000/api/result'
 
 const themessage = ["You can't go left", "You can't go up", "You can't go down", "You can't go right", ""]
-const coordinates = ["(1, 1)", "(2, 1)", "(3, 1)",
-  "(1, 2)", "(2, 2)", "(3, 2)",
-  "(1, 3)", "(2, 3)", "(3, 3)"]
+const coordinates = ["(1,1)", "(2,1)", "(3,1)",
+  "(1,2)", "(2,2)", "(3,2)",
+  "(1,3)", "(2,3)", "(3,3)"]
 const dontmoveright = [2, 5, 8]
 const dontmoveleft = [0, 3, 6]
 const up = 2
@@ -38,6 +38,7 @@ export default class AppClass extends React.Component {
       click: 4,
       finalemail: "",
       displayon: false
+      
     }
 
   }
@@ -91,33 +92,40 @@ export default class AppClass extends React.Component {
 // all of this is the form now
 
 onsubmithandler = (e) => {
-  // e.preventDefault()
+  e.preventDefault()
   // this.emailconfig(e.target.value)
   // this.setState({...this.state, email: initialEmail})
-  this.setState({...this.state, email: initialEmail, displayon: true})
-  
+ const addstuff = { x: coordinates[this.state.index][1], y: coordinates[this.state.index][3], steps: this.state.steps, email: this.state.email  };
+
+  axios.post("http://localhost:9000/api/result",  addstuff)
+  .then(resp => {console.log(resp.data);
+  const display = resp.data.message
+this.setState({...this.state, finalemail: display, displayon: true})}
+  )
+  .catch(err => console.log(err))
 }
 
 onchangehandler = (e) => {
   e.preventDefault()
-  this.emailconfig(e.target.value)
+  this.setState({...this.state, email: e.target.value})
+  // this.setState({...this.state, readytopost: true})
+  // this.emailconfig(e.target.value)
+
   
   
 }
 
 
-emailconfig = (email) =>{
-  let newarray = [...email]
-for (let i = 0 ; i < newarray.length; i ++){
-   if (newarray[i] === "@"){
-    const  newname = newarray.splice(0, i ).join("")
-    }
-  if (newname.length !== undefined) {
-    this.setState({...this.state, finalemail: newname, readytopost: true})
-    }
-}
-console.log(this.state.finalemail)
-}
+// emailconfig = (email) =>{
+//   let newarray = [...email]
+// for (let i = 0 ; i < newarray.length; i ++){
+//    if (newarray[i] === "@"){
+//     const  newname = newarray.splice(0, i ).join("")
+//     this.setState({...this.state, finalemail: newname, readytopost: true})
+//     }
+// }
+
+// }
 
 
 
@@ -160,7 +168,7 @@ console.log(this.state.finalemail)
     //   // axios.post(URL, {})
     //   // Use a POST request to send a payload to the server.
     // }
-
+  
   
     render() {
       const { className } = this.props
@@ -187,7 +195,7 @@ console.log(this.state.finalemail)
             }
           </div>
           <div className="info">
-            <h3 id="message"> { this.state.displayon ?   `${this.state.finalemail} win #${Math.floor(Math.random(1)*100)}`: themessage[this.state.click] }</h3>
+            <h3 id="message"> { this.state.displayon ?   this.state.finalemail : themessage[this.state.click] }</h3>
           </div>
           <div id="keypad">
             <button onClick={this.changingtheBLeft} id="left">LEFT</button>
