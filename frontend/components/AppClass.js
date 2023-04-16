@@ -85,47 +85,75 @@ export default class AppClass extends React.Component {
 
 
     reset = (e) => {
-      this.setState({ ...this.state, steps: initialSteps, index: initialIndex, click : 4 })
+      this.setState({ ...this.state, steps: initialSteps, index: initialIndex, click : 4 , displayon: false, email: initialEmail})
     }
 
    
-// all of this is the form now
+// ~~~~~~~~~~~~~all of this is the form now ~~~~~~~~~
 
 onsubmithandler = (e) => {
   e.preventDefault()
-  // this.emailconfig(e.target.value)
-  // this.setState({...this.state, email: initialEmail})
  const addstuff = { x: coordinates[this.state.index][1], y: coordinates[this.state.index][3], steps: this.state.steps, email: this.state.email  };
 
   axios.post("http://localhost:9000/api/result",  addstuff)
-  .then(resp => {console.log(resp.data);
+  .then(resp => {
   const display = resp.data.message
 this.setState({...this.state, finalemail: display, displayon: true})}
   )
-  .catch(err => console.log(err))
+  .catch(err => { console.log(err.response.data.message) 
+    this.setState({...this.state, finalemail: err.response.data.message, displayon: true})})
 }
 
 onchangehandler = (e) => {
   e.preventDefault()
   this.setState({...this.state, email: e.target.value})
-  // this.setState({...this.state, readytopost: true})
-  // this.emailconfig(e.target.value)
 
+}
   
-  
+    render() {
+      const { className } = this.props
+      return (
+        <div id="wrapper" className={className}>
+          <div className="info">
+            <h3 id="coordinates">Coordinates {coordinates[this.state.index]}</h3>
+            <h3 id="steps">You moved {this.state.steps} times</h3>
+          </div>
+          <div id="grid">
+            {/* {
+            [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
+              <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
+                {idx === 4 ? 'B' : null}
+              </div>
+            ))
+          } */}
+            {
+              [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
+                <div key={idx} className={`square${idx === this.state.index ? ' active' : ''}`}>
+                  {idx === this.state.index ? 'B' : null}
+                </div>
+              ))
+            }
+          </div>
+          <div className="info">
+            <h3 id="message"> { this.state.displayon ?   this.state.finalemail : themessage[this.state.click] }</h3>
+          </div>
+          <div id="keypad">
+            <button onClick={this.changingtheBLeft} id="left">LEFT</button>
+            <button onClick={this.changingtheBup} id="up">UP</button>
+            <button onClick={this.changingtheBright} id="right">RIGHT</button>
+            <button onClick={this.changingtheBdown} id="down">DOWN</button>
+            <button onClick={this.reset} id="reset">reset</button>
+          </div>
+          <form onSubmit={this.onsubmithandler}>
+            <input onChange={this.onchangehandler}id="email" type="email" placeholder="type email"></input>
+            <input id="submit" type="submit"></input>
+          </form>
+        </div>
+    )
+  }
 }
 
 
-// emailconfig = (email) =>{
-//   let newarray = [...email]
-// for (let i = 0 ; i < newarray.length; i ++){
-//    if (newarray[i] === "@"){
-//     const  newname = newarray.splice(0, i ).join("")
-//     this.setState({...this.state, finalemail: newname, readytopost: true})
-//     }
-// }
-
-// }
 
 
 
@@ -169,46 +197,3 @@ onchangehandler = (e) => {
     //   // Use a POST request to send a payload to the server.
     // }
   
-  
-    render() {
-      const { className } = this.props
-      return (
-        <div id="wrapper" className={className}>
-          <div className="info">
-            <h3 id="coordinates">Coordinates {coordinates[this.state.index]}</h3>
-            <h3 id="steps">You Moved {this.state.steps} Times</h3>
-          </div>
-          <div id="grid">
-            {/* {
-            [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-              <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-                {idx === 4 ? 'B' : null}
-              </div>
-            ))
-          } */}
-            {
-              [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-                <div key={idx} className={`square${idx === this.state.index ? ' active' : ''}`}>
-                  {idx === this.state.index ? 'B' : null}
-                </div>
-              ))
-            }
-          </div>
-          <div className="info">
-            <h3 id="message"> { this.state.displayon ?   this.state.finalemail : themessage[this.state.click] }</h3>
-          </div>
-          <div id="keypad">
-            <button onClick={this.changingtheBLeft} id="left">LEFT</button>
-            <button onClick={this.changingtheBup} id="up">UP</button>
-            <button onClick={this.changingtheBright} id="right">RIGHT</button>
-            <button onClick={this.changingtheBdown} id="down">DOWN</button>
-            <button onClick={this.reset} id="reset">reset</button>
-          </div>
-          <form onSubmit={this.onsubmithandler}>
-            <input onChange={this.onchangehandler}id="email" type="email" placeholder="type email"></input>
-            <input id="submit" type="submit"></input>
-          </form>
-        </div>
-    )
-  }
-}

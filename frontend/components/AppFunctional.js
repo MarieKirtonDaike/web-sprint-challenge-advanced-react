@@ -3,7 +3,7 @@ import { useState } from 'react'
 import axios from 'axios'
 
 // Suggested initial states
-const themessage = ["You can't go left", "You can't go up", "You can't go down", "You can't go right", ""]
+const themessage = ["You can't go left","You can't go up", "You can't go down", "You can't go right", ""]
 const coordinates = ["(1,1)", "(2,1)", "(3,1)",
   "(1,2)", "(2,2)", "(3,2)",
   "(1,3)", "(2,3)", "(3,3)"]
@@ -63,6 +63,8 @@ export default function AppFunctional(props) {
     setSteps(initialSteps);
     setIndex(initialIndex)
     setClick(4)
+    setdisplayon(false)
+    setEmail(initialEmail)
   }
 
   const changestepsright = (e) => {
@@ -96,12 +98,7 @@ export default function AppFunctional(props) {
   const onchangehandler = (e) => {
     e.preventDefault();
     setEmail(e.target.value)
-
-
-
   }
-
-
 
   function onsubmithandler(e) {
     e.preventDefault();
@@ -111,69 +108,15 @@ export default function AppFunctional(props) {
     .then(resp => {
       const display = resp.data.message
       setDisplay(display)
+      setdisplayon(true)
     })
       
-    .catch(err => console.log(err))
-    setdisplayon(true)
+    .catch(err => {console.log(err);
+    setDisplay(err.response.data.message);
+    setdisplayon(true)})
     
-    //  emailconfig(email)
-    // if (email.length >= 1) {
-    //   setdisplayon(true)
-    // }
-  }
-
-
-  // const emailconfig = (email) => {
-  //   let newarray = [...email]
-  //   for (let i = 0; i < newarray.length; i++) {
-  //     if (newarray[i] === "@") {
-  //       const newname = newarray.splice(0, i).join("")
-  //       if (newname.length !== undefined) {
-  //         setEmail(newname)
-  //       }
-  //     }
-  //   }
-  // }
-
-
-
-
-
-  // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
-  // You can delete them and build your own logic from scratch.
-
-  function getXY() {
-    // It it not necessary to have a state to track the coordinates.
-    // It's enough to know what index the "B" is at, to be able to calculate them.
-  }
-
-  function getXYMessage() {
-    // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
-    // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
-    // returns the fully constructed string.
-  }
-
-  // function reset() {
-  //   // Use this helper to reset all states to their initial values.
-  // }
-
-  function getNextIndex(direction) {
-    // This helper takes a direction ("left", "up", etc) and calculates what the next index
-    // of the "B" would be. If the move is impossible because we are at the edge of the grid,
-    // this helper should return the current index unchanged.
-  }
-
-  function move(evt) {
-    // This event handler can use the helper above to obtain a new index for the "B",
-    // and change any states accordingly.
-  }
-
-  function onChange(evt) {
-    // You will need this to update the value of the input.
-  }
-
-  function onSubmit(evt) {
-    // Use a POST request to send a payload to the server.
+    
+  
   }
   
   return (
@@ -215,3 +158,40 @@ export default function AppFunctional(props) {
     </div>
   )
 }
+
+  // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
+  // You can delete them and build your own logic from scratch.
+
+  function getXY() {
+    // It it not necessary to have a state to track the coordinates.
+    // It's enough to know what index the "B" is at, to be able to calculate them.
+  }
+
+  function getXYMessage() {
+    // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
+    // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
+    // returns the fully constructed string.
+  }
+
+  // function reset() {
+  //   // Use this helper to reset all states to their initial values.
+  // }
+
+  function getNextIndex(direction) {
+    // This helper takes a direction ("left", "up", etc) and calculates what the next index
+    // of the "B" would be. If the move is impossible because we are at the edge of the grid,
+    // this helper should return the current index unchanged.
+  }
+
+  function move(evt) {
+    // This event handler can use the helper above to obtain a new index for the "B",
+    // and change any states accordingly.
+  }
+
+  function onChange(evt) {
+    // You will need this to update the value of the input.
+  }
+
+  function onSubmit(evt) {
+    // Use a POST request to send a payload to the server.
+  }
