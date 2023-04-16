@@ -98,10 +98,12 @@ onsubmithandler = (e) => {
   axios.post("http://localhost:9000/api/result",  addstuff)
   .then(resp => {
   const display = resp.data.message
-this.setState({...this.state, finalemail: display, displayon: true})}
+this.setState({...this.state, finalemail: display, email: "", displayon: true});
+}
   )
   .catch(err => { console.log(err.response.data.message) 
-    this.setState({...this.state, finalemail: err.response.data.message, displayon: true})})
+    this.setState({...this.state, finalemail: err.response.data.message, displayon: true, email: ""});
+    })
 }
 
 onchangehandler = (e) => {
@@ -116,7 +118,7 @@ onchangehandler = (e) => {
         <div id="wrapper" className={className}>
           <div className="info">
             <h3 id="coordinates">Coordinates {coordinates[this.state.index]}</h3>
-            <h3 id="steps">You moved {this.state.steps} times</h3>
+            <h3 id="steps">You moved {this.state.steps} {this.state.steps === 1 ? "time":"times"}</h3>
           </div>
           <div id="grid">
             {/* {
@@ -145,7 +147,7 @@ onchangehandler = (e) => {
             <button onClick={this.reset} id="reset">reset</button>
           </div>
           <form onSubmit={this.onsubmithandler}>
-            <input onChange={this.onchangehandler}id="email" type="email" placeholder="type email"></input>
+            <input value={this.state.email} onChange={this.onchangehandler}id="email" type="email" placeholder="type email"></input>
             <input id="submit" type="submit"></input>
           </form>
         </div>

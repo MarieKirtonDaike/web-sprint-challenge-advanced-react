@@ -109,11 +109,16 @@ export default function AppFunctional(props) {
       const display = resp.data.message
       setDisplay(display)
       setdisplayon(true)
+      setEmail("")
+   
     })
       
     .catch(err => {console.log(err);
     setDisplay(err.response.data.message);
-    setdisplayon(true)})
+    setdisplayon(true);
+  setEmail("")})
+  
+ 
     
     
   
@@ -123,7 +128,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Coordinates {coordinates[index]}</h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="steps">You moved {steps} {steps === 1? "time":"times"}</h3>
       </div>
       <div id="grid">
         {/* {
@@ -152,7 +157,7 @@ export default function AppFunctional(props) {
         <button onClick={reset} id="reset">reset</button>
       </div>
       <form onSubmit={onsubmithandler}>
-        <input onChange={onchangehandler} id="email" type="email" placeholder="type email"></input>
+        <input value={email} onChange={onchangehandler} id="email" type="email" placeholder="type email"></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
